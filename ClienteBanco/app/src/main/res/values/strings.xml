@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Cliente Banco</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string name="title_activity_ajustes">Ajustes</string>
+    <string name="title_activity_balance">Balance</string>
+    <string name="title_activity_cuenta">Cuentas</string>
+    <string name="title_activity_inicio">Inicio</string>
+    <string name="title_activity_operaciones">Operaciones</string>
+    <string name="title_activity_presupuestos">Presupuestos</string>
+    <string name="title_activity_transacciones">Transacciones</string>
+
+
+    <string name="texttitulo">Money Vault</string>
+    <string name="botoncuentas">Cuentas</string>
+    <string name="botonbalance">Balance</string>
+    <string name="botonoperaciones">Ultimas Operaciones</string>
+    <string name="botonpresupuestos">Presupuestos</string>
+    <string name="botontransacciones">Transacciones</string>
+    <string name="botonajustes">Ajustes</string>
+
+    <string name="botonañadircuenta">Añadir Cuenta</string>
+    <string name="botonmodificarcuenta">Modificar Cuenta</string>
+    <string name="botoneliminarcuenta">Eliminar Cuenta</string>
+
+</resources>

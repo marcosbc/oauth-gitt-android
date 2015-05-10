@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appmain_scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
+    android:background="@drawable/wareninja_wallpaper_img"
+    >
+   
+<LinearLayout 
+    android:id="@+id/lay_wrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+	android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facebook OAuth2 Login"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_small"/>
+        <ImageButton 
+   			android:id="@+id/img_facebookLogin" 
+   			android:onClick="onClick_facebookLogin"
+	        android:visibility="visible"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:src="@drawable/generic_icon_facebooklogin"
+	        android:adjustViewBounds="true"
+	        android:layout_marginLeft="@dimen/margin_size_large"
+	        android:layout_marginRight="@dimen/margin_size_large"
+			android:background="@null"
+			android:gravity="center"
+			/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Urbank Login"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal"
+        android:onClick="urbankLogin" />
+
+    <View
+			android:layout_width="200dip" 
+	        android:layout_height="2dip"
+	        android:gravity="center_horizontal"
+			android:layout_gravity="center_horizontal"
+	        android:background="#FF909090"
+	        android:layout_marginTop="@dimen/margin_size_medium"
+	        />
+
+
+    
+</LinearLayout>
+
+</ScrollView>

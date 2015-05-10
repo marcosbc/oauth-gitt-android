@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="#C0C0C0">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <ImageButton
+                android:layout_width="70dp"
+                android:layout_height="75dp"
+                android:id="@+id/imageButton"
+                android:src="@drawable/sidevault"
+                android:background="#00000000"
+                android:scaleType="fitStart"
+                android:layout_weight="0.34"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="51dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/texttitulo"
+                android:id="@+id/texttitulo"
+                android:layout_marginTop="15dp"
+                android:textColor="#003366"
+                android:textSize="42dp"
+                android:textStyle="bold|italic"
+                android:gravity="center_horizontal"
+                android:layout_weight="0.24" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/botoncuentas"
+            android:id="@+id/botoncuentas"
+            android:layout_marginTop="80dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="clicEnBoton_IrCuenta"
+            android:background="#003366"
+            android:textColor="#C0C0C0" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/botonbalance"
+            android:id="@+id/botonbalance"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="clicEnBoton_IrBalance"
+            android:background="#003366"
+            android:textColor="#C0C0C0" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/botonoperaciones"
+            android:id="@+id/botonoperaciones"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="clicEnBoton_IrOperaciones"
+            android:background="#003366"
+            android:textColor="#C0C0C0" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/botonajustes"
+            android:id="@+id/botonajustes"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="clicEnBoton_IrAjustes"
+            android:background="#003366"
+            android:textColor="#C0C0C0" />
+
+    </LinearLayout>
+</RelativeLayout>
