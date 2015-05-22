@@ -19,5 +19,18 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:textColor="#003366" />
+
+        <luis.clientebanco.holographlibrary.PieGraph
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/piegraph"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lista_operaciones"
+            android:layout_gravity="center_horizontal"
+            android:headerDividersEnabled="false" />
     </LinearLayout>
+
 </RelativeLayout>

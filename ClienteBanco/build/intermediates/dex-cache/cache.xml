@@ -6,28 +6,28 @@
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-91c0749acf90ca59f3eca54859386d55121f6005.jar" />
+        <dex dex="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-91c0749acf90ca59f3eca54859386d55121f6005.jar" />
     </item>
     <item
-        jar="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\pre-dexed\debug\classes-41cae13fedb965e0b9a0d4eb0453c813f8978a68.jar" />
-    </item>
-    <item
-        jar="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-83afc6aa74156df44138f19e3044fed818a7141b.jar" />
-    </item>
-    <item
-        jar="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jar="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Luis\AndroidStudioProjects\ClienteBanco\app\build\intermediates\pre-dexed\debug\classes-a8522af58439251531a95ed03d874c11e13b508e.jar" />
+        <dex dex="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\pre-dexed\debug\classes-b605c1b84846ce77298d2ebe4e46a2bdcf99c028.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\pre-dexed\debug\classes-7901cb73894f174f195fa564bd6213782c277150.jar" />
+    </item>
+    <item
+        jar="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\Users\Luis\AndroidStudioProjects\oauth-gitt-android\ClienteBanco\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-fb8a0ec698625008f744c711da0b0b3f6ac5ea32.jar" />
     </item>
 
 </items>

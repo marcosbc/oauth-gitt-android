@@ -119,7 +119,8 @@ public final class Utils {
      */
     public static Bundle parseUrl(String url) {
         // hack to prevent MalformedURLException
-        url = url.replace("fbconnect", "http"); 
+        url = url.replace("fbconnect", "http");
+        url = url.replace("moneyvault", "http");
         try {
             URL u = new URL(url);
             Bundle b = decodeUrl(u.getQuery());

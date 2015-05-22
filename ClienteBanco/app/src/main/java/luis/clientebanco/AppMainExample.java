@@ -23,17 +23,14 @@ package luis.clientebanco;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieSyncManager;
 
 import luis.clientebanco.OAuth.AppContext;
-import luis.clientebanco.OAuth.FacebookOAuthDialog;
 import luis.clientebanco.OAuth.GenericDialogListener;
 import luis.clientebanco.OAuth.LOGGING;
+import luis.clientebanco.OAuth.UrbankOAuthDialog;
 import luis.clientebanco.OAuth.WebService;
 
 public class AppMainExample extends Activity {
@@ -43,7 +40,10 @@ public class AppMainExample extends Activity {
 	public Context mContext;
 	public Activity mActivity;
 	public WebService webService;
-	
+
+	private String accessCode;
+	private String accessToken;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,110 +52,109 @@ public class AppMainExample extends Activity {
         mActivity = this;
         setContentView(R.layout.appmainexample);
     }
-    
 
-	public void onClick_facebookLogin(View v) {
-		//NotifierHelper.displayToast(mContext, "TODO: onClick_facebookLogin", NotifierHelper.SHORT_TOAST);
-		
-		// https://developers.facebook.com/docs/reference/dialogs/oauth/
-		
-    	webService = new WebService();
-    	
-    	String authRequestRedirect = AppContext.FB_APP_OAUTH_BASEURL+AppContext.FB_APP_OAUTH_URL
-		        + "?client_id="+AppContext.FB_APP_ID
-		        + "&response_type=token" 
-		        + "&display=touch"
-		        + "&scope=" + TextUtils.join(",", AppContext.FB_PERMISSIONS)
-		        + "&redirect_uri="+AppContext.FB_APP_CALLBACK_OAUTHCALLBACK
-		        ;
+	public void urbankLogin(View V){
+
+		urbankAccessCode();
+
+	}
+
+	private void urbankAccessCode(){
+
+		webService = new WebService();
+
+		String authRequestRedirect = AppContext.UB_APP_OAUTH_URL
+				+ "?client_id="+AppContext.UB_CLIENT_ID
+				+ "&redirect_uri="+AppContext.UB_APP_REDIRECT
+				+ "&response_type=code"
+				+ "&scope=permission_read_transaction"
+				;
+
 		if(LOGGING.DEBUG)
 			Log.d(TAG, "authRequestRedirect->"+authRequestRedirect);
-		
-		CookieSyncManager.createInstance(this);
-		new FacebookOAuthDialog(mContext, authRequestRedirect
-				, new GenericDialogListener() {
+
+		new  UrbankOAuthDialog(mContext, authRequestRedirect, new GenericDialogListener() {
+
 			public void onComplete(Bundle values) {
 				if(LOGGING.DEBUG)
 					Log.d(TAG, "onComplete->"+values);
-				// https://YOUR_REGISTERED_REDIRECT_URI/?code=CODE
-				// onComplete->Bundle[{expires_in=0, access_token=<ACCESS_TOKEN>}]
-		/*
-		if user ALLOWs your app -> Bundle[{expires_in=0, access_token=<ACCESS_TOKEN>}]
-		if user doesNOT ALLOW -> Bundle[{error=access_denied, error_description=The+user+denied+your+request}]
- 		*/
-				// ensure any cookies set by the dialog are saved
-                CookieSyncManager.getInstance().sync();
-				
-				String tokenResponse = "";
+
+				accessCode = "";
+
 				try{
-					
-					tokenResponse = values.toString();
-					
-					broadcastLoginResult(AppContext.COMMUNITY.FACEBOOK, tokenResponse);
+
+					accessCode = values.getString("code");
+
+					urbankAccessToken();
 					//JSONObject tokenJson = new JSONObject(tokenResponse);
 					//if(LOGGING.DEBUG)Log.d(TAG, "tokenJson->" + tokenJson);
 
 				}
 				catch (Exception ex1){
 					Log.w(TAG, ex1.toString());
-					tokenResponse = null;
+					accessCode = null;
 				}
-		    }
+				Log.v(TAG, "prueba");
+			}
 			public void onError(String e) {
 				if(LOGGING.DEBUG)Log.d(TAG, "onError->"+e);
-		    }
+			}
 			public void onCancel() {
 
 				if(LOGGING.DEBUG)Log.d(TAG, "onCancel()");
-		    }
-		}).show();
-	}
-
-	public void urbankLogin(View V){
-
-		webService = new WebService();
-
-		String authRequestRedirect = AppContext.FB_APP_OAUTH_BASEURL+AppContext.FB_APP_OAUTH_URL
-				+ "?client_id="+AppContext.FB_APP_ID
-				+ "&response_type=token"
-				+ "&display=touch"
-				+ "&scope=" + TextUtils.join(",", AppContext.FB_PERMISSIONS)
-				+ "&redirect_uri="+AppContext.FB_APP_CALLBACK_OAUTHCALLBACK
-				;
-
-	}
-
-	private void broadcastLoginResult(AppContext.COMMUNITY community, String payload) {
-		
-		String intentAction = "";
-		String intentExtra = "";
-		try {
-
-			if (AppContext.COMMUNITY.FACEBOOK == community) {
-				intentAction = AppContext.BCAST_USERLOGIN_FACEBOOK;
-				intentExtra = AppContext.INTENT_EXTRA_USERLOGIN_FACEBOOK;
 			}
-			/*else if (AppContext.COMMUNITY.TWILIO == community) {
-				intentAction = AppContext.BCAST_USERLOGIN_TWILIO;
-				intentExtra = AppContext.INTENT_EXTRA_USERLOGIN_TWILIO;
-			}*/
-			
-			if(LOGGING.DEBUG)Log.d(TAG, "sending Broadcast! " 
-					+ "|intentAction->"+intentAction
-					+ "|intentExtra->"+intentExtra
-					+ "|payload->"+payload
-					);
-			
-			Intent mIntent = new Intent();
-        	mIntent.setAction(intentAction);
-        	mIntent.putExtra(intentExtra, payload);
-        	this.sendBroadcast(mIntent);
-		}
-    	catch (Exception ex) {
-    		Log.w(TAG, ex.toString());
-    	}
-    	
+		}).show();
+
 	}
+
+	public void urbankAccessToken(){
+
+		accessToken = "";
+
+		String authRequestRedirect = AppContext.UB_APP_TOKEN_URL
+				+ "?client_id="+AppContext.UB_CLIENT_ID
+				+ "&redirect_uri="+AppContext.UB_APP_REDIRECT
+				+ "&grant_type=authorization_code"
+				+ "&client_secret=" + AppContext.UB_CLIENT_SECRET
+				+ "&code=" + accessCode
+		;
+
+		if(LOGGING.DEBUG)
+			Log.d(TAG, "authRequestRedirect->"+authRequestRedirect);
+
+		new  UrbankOAuthDialog(mContext, authRequestRedirect, new GenericDialogListener() {
+
+			public void onComplete(Bundle values) {
+				if(LOGGING.DEBUG)
+					Log.d(TAG, "onComplete->"+values);
+
+				accessToken = "";
+
+				try{
+
+					accessToken = values.toString();
+
+					//JSONObject tokenJson = new JSONObject(tokenResponse);
+					//if(LOGGING.DEBUG)Log.d(TAG, "tokenJson->" + tokenJson);
+
+				}
+				catch (Exception ex1){
+					Log.w(TAG, ex1.toString());
+					accessToken = null;
+				}
+				Log.v(TAG, "prueba");
+			}
+			public void onError(String e) {
+				if(LOGGING.DEBUG)Log.d(TAG, "onError->"+e);
+			}
+			public void onCancel() {
+
+				if(LOGGING.DEBUG)Log.d(TAG, "onCancel()");
+			}
+		}).show();
+
+	}
+
 
 
 }

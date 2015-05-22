@@ -19,5 +19,42 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:textColor="#003366" />
+
+        <luis.clientebanco.holographlibrary.LineGraph
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/linegraph"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Balance Total:"
+                android:id="@+id/textViewBalanceTotal"
+                android:textColor="#003366"
+                android:layout_marginLeft="@dimen/margin_size_extralarge" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="1845.95 €"
+                android:id="@+id/editTextBalanceTotal"
+                android:layout_marginLeft="@dimen/margin_size_extralarge" />
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lista_balance"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp" />
+
     </LinearLayout>
 </RelativeLayout>

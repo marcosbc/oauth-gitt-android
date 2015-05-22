@@ -43,11 +43,7 @@ public class UrbankOAuthDialog extends Dialog {
 	private static final String TAG = "UrbankOAuthDialog";
 
 	/* Strings used in the OAuth flow */
-	public static final String SIGNIN_URI = AppContext.FB_APP_REDIRECT_SIGNIN;
-    public static final String OAUTHCALLBACK_URI = AppContext.FB_APP_CALLBACK_OAUTHCALLBACK;
-    public static final String CANCEL_URI = "fbconnect://cancel";//NOT used
-    //public static final String TOKEN = "access_token";// FIXME: adapt this
-    //public static final String EXPIRES = "expires_in";
+    public static final String OAUTHCALLBACK_URI = AppContext.UB_APP_REDIRECT;
 
 
     static final int BG_COLOR = Color.LTGRAY;//0xFF6D84B4;
@@ -58,8 +54,6 @@ public class UrbankOAuthDialog extends Dialog {
                          ViewGroup.LayoutParams.FILL_PARENT);
     static final int MARGIN = 4;
     static final int PADDING = 2;
-    static final String DISPLAY_STRING = "touch";
-    //static final String FB_ICON = "icon.png";
 
     private String mUrl;
     private GenericDialogListener mListener;
@@ -135,7 +129,7 @@ public class UrbankOAuthDialog extends Dialog {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             if (AppContext.DEBUG)
-                Log.d(TAG, "onPageStarted->Webview loading URL: " + url);
+                 Log.d(TAG, "onPageStarted->Webview loading URL: " + url);
             super.onPageStarted(view, url, favicon);
             mSpinner.show();
         }
@@ -172,7 +166,7 @@ public class UrbankOAuthDialog extends Dialog {
                 } else if (error.equals("access_denied") ||
                            error.equals("OAuthAccessDeniedException")) {
                     mListener.onCancel();
-                } 
+                }
 
                 UrbankOAuthDialog.this.dismiss();
             }
