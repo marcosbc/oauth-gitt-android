@@ -62,31 +62,29 @@ public class BalanceActivity extends Activity {
             }
         });
 
+        Line l = new Line();
+        LinePoint p;
+        float balance = 0;
         float balanceTotal = 0;
         for(int i=0;i<lista_cuentas.size();i++){
-            balanceTotal += lista_cuentas.get(i).getBALANCE();
+
+            balance = lista_cuentas.get(i).getBALANCE();
+            balanceTotal += balance;
+
+
+            p = new LinePoint();
+            p.setX(i);
+            p.setY(balance);
+            l.addPoint(p);
         }
 
         texto_balanceTotal.setText(Float.toString(balanceTotal) + " euros");
 
-        Line l = new Line();
-        LinePoint p = new LinePoint();
-        p.setX(0);
-        p.setY(4);
-        l.addPoint(p);
-        p = new LinePoint();
-        p.setX(2);
-        p.setY(8);
-        l.addPoint(p);
-        p = new LinePoint();
-        p.setX(4);
-        p.setY(6);
-        l.addPoint(p);
         l.setColor(Color.parseColor("#003366"));
 
         LineGraph li = (LineGraph) findViewById(R.id.linegraph);
         li.addLine(l);
-        li.setRangeY(0, 10);
+        li.setRangeY(0, balanceTotal);
         li.setLineToFill(0);
 
         li.setOnPointClickedListener(new LineGraph.OnPointClickedListener(){

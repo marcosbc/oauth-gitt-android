@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import luis.clientebanco.holographlibrary.PieGraph;
@@ -22,6 +23,7 @@ import luis.clientebanco.holographlibrary.PieSlice;
 public class OperacionesActivity extends Activity {
 
     private ListView lista;
+
     private static final Uri URI_CUENTAS = Uri.parse(
             "content://luis.contentprovider/cuentas");
     private static final Uri URI_TRANSACCIONES = Uri.parse(
@@ -34,6 +36,40 @@ public class OperacionesActivity extends Activity {
 
         ArrayList<Transacciones> lista_transacciones = recuperarTransacciones();
 
+        PieGraph pg = (PieGraph) findViewById(R.id.piegraph);
+        PieSlice slice = new PieSlice();
+        slice.setColor(Color.CYAN);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.BLUE);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.GREEN);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.MAGENTA);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.YELLOW);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.RED);
+        slice.setValue(0);
+        pg.addSlice(slice);
+
+        pg.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener(){
+
+            @Override
+            public void onClick(int index) {
+
+            }
+
+        });
 
         lista = (ListView) findViewById(R.id.lista_operaciones);
         lista.setAdapter(new Lista_adaptador(this, R.layout.operaciones, lista_transacciones) {
@@ -44,7 +80,7 @@ public class OperacionesActivity extends Activity {
                 if (entrada != null) {
                     TextView texto_descrip = (TextView) view.findViewById(R.id.textView_descrip);
                     if (texto_descrip != null)
-                        texto_descrip.setText(((Transacciones) entrada).getTODESCRIP());
+                        texto_descrip.setText(((Transacciones) entrada).getFROMDESCRIP());
 
                     TextView texto_quantity = (TextView) view.findViewById(R.id.textView_quantity);
                     if (texto_quantity != null) {
@@ -62,7 +98,33 @@ public class OperacionesActivity extends Activity {
 
                     Button boton  = (Button) view.findViewById(R.id.imageView_button);
 
-                    boton.setBackgroundColor(Color.parseColor("#AA66CC"));
+                    int categoria = determinarCategoria(texto_descrip.getText().toString());
+                    PieGraph pg = (PieGraph) findViewById(R.id.piegraph);
+                    PieSlice slice = pg.getSlice(categoria);
+                    slice.setValue(slice.getValue() + Float.parseFloat(texto_quantity.getText().toString()));
+                    switch(categoria) {
+
+                        case 0:
+                            boton.setBackgroundColor(Color.CYAN);
+                            break;
+                        case 1:
+                            boton.setBackgroundColor(Color.BLUE);
+                            break;
+                        case 2:
+                            boton.setBackgroundColor(Color.GREEN);
+                            break;
+                        case 3:
+                            boton.setBackgroundColor(Color.MAGENTA);
+                            break;
+                        case 4:
+                            boton.setBackgroundColor(Color.YELLOW);
+                            break;
+                        case 5:
+                            boton.setBackgroundColor(Color.RED);
+                            break;
+
+
+                    }
 
 
                     TextView texto_ID = (TextView) view.findViewById(R.id.textView_ID);
@@ -73,28 +135,7 @@ public class OperacionesActivity extends Activity {
             }
         });
 
-        PieGraph pg = (PieGraph) findViewById(R.id.piegraph);
-        PieSlice slice = new PieSlice();
-        slice.setColor(Color.parseColor("#99CC00"));
-        slice.setValue(2);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#FFBB33"));
-        slice.setValue(3);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#AA66CC"));
-        slice.setValue(8);
-        pg.addSlice(slice);
 
-        pg.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener(){
-
-            @Override
-            public void onClick(int index) {
-
-            }
-
-        });
     }
 
     public ArrayList<Transacciones> recuperarTransacciones() {
@@ -131,5 +172,19 @@ public class OperacionesActivity extends Activity {
         return lista_transacciones;
     }
 
+    public int determinarCategoria(String desc) {
+        int cat = 0; //otros
+        if(desc.contains("CARREFOUR") || desc.contains("MERCADONA") || desc.contains("DIA"))
+            cat = 1; //comida
+        else if(desc.contains("DECATHLON"))
+            cat = 2; //ropa
+        else if(desc.contains("PEAJE"))
+            cat = 3; // peajes
+        else if(desc.contains("APPLE"))
+            cat = 4; // tecnologia
+        else if(desc.contains("TRANSFERENCIA"))
+            cat = 5;
 
+        return cat;
+    }
 }

@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class CuentaActivity extends Activity {
         mContext = this;
         mActivity = this;
         seleccionado = -1;
+        int tam = 0;
 
         setContentView(R.layout.activity_cuenta);
 
@@ -89,11 +91,24 @@ public class CuentaActivity extends Activity {
                 Toast.makeText(getApplicationContext(), texto, Toast.LENGTH_LONG).show();
 
                 seleccionado = Integer.parseInt(textoID.getText().toString());
+
+                try{
+                    for (int ctr=0;ctr<=lista.getCount() ;ctr++){
+                        if(position==ctr){
+                            lista.getChildAt(ctr).setBackgroundColor(Color.GRAY);
+                        }else{
+                            lista.getChildAt(ctr).setBackgroundColor(Color.parseColor("#C0C0C0"));
+                        }
+                    }
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private void mostrarLista(){
+    private int mostrarLista(){
 
         ArrayList<Cuentas> lista_cuentas = recuperarCuentas();
 
@@ -122,6 +137,8 @@ public class CuentaActivity extends Activity {
                 }
             }
         });
+
+        return lista_cuentas.size();
 
     }
 
