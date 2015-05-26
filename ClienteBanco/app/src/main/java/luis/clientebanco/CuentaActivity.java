@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ import luis.clientebanco.OAuth.WebService;
  * {"access_token":"WN7CVFH0bbM3xkBi2m52i5zyeazpMS4FXqtNmdtb","token_type":"Bearer","expires_in":3600,"refresh_token":"07dgEQimJq4jc4iztXFgBzCHgeUqBJ4votzV9OhE"}
  * {"owner_id":"2","owner_type":"user","access_token":{},"client_id":1,"scopes":{"permission_read_transaction":{"id":"permission_read_transaction","description":"Ver transacciones"}}}
  * {"uid":2,"username":"luis","name":"Luis","lastname":"Casabuena","dni":"Z98765432A","iban":"ES8023100001180000054321","balance":322.75}
- *
+ * [{"tid":1,"to_description":"TRANSFERENCIA DE LUIS CASABUENA","from_description":"TRANSFERENCIA A MARCOS BJORKELUND","quantity":53.25,"from_iban":"ES8023100001180000054321","to_iban":"ES8023100001180000012345","date":1432275041,"status":""},{"tid":5,"to_description":"COMPRA DE MARCOS BJORKELUND","from_description":"COMPRA EN DECATHLON","quantity":65,"from_iban":"ES8023100001180000054321","to_iban":"ES8023100001180000099996","date":1432275041,"status":""},{"tid":7,"to_description":"COMPRA DE LUIS CASABUENA","from_description":"COMPRA EN SUPERMERCADOS DIA","quantity":20,"from_iban":"ES8023100001180000054321","to_iban":"ES8023100001180000099994","date":1432275041,"status":""},{"tid":8,"to_description":"COMPRA DE LUIS CASABUENA","from_description":"COMPRA EN SUPERMERCADOS MAS","quantity":15.75,"from_iban":"ES8023100001180000054321","to_iban":"ES8023100001180000099993","date":1432275041,"status":""}]
  */
 
 public class CuentaActivity extends Activity {
@@ -57,9 +58,11 @@ public class CuentaActivity extends Activity {
 
     protected static final String TAG = "urbankAccessCode";
     public WebService webService;
+    private int seleccionado;
     private String accessCode;
     private String accessToken;
     private String refreshToken;
+    private int cuentaActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +70,27 @@ public class CuentaActivity extends Activity {
 
         mContext = this;
         mActivity = this;
+        seleccionado = -1;
 
         setContentView(R.layout.activity_cuenta);
 
         mostrarLista();
+
+        lista = (ListView) findViewById(R.id.listacuentas);
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                TextView textoNombre = (TextView) view.findViewById(R.id.textView_nombre);
+                TextView textoID = (TextView) view.findViewById(R.id.textView_ID);
+
+                CharSequence texto = "Seleccionado: " + textoNombre.getText();
+                Toast.makeText(getApplicationContext(), texto, Toast.LENGTH_LONG).show();
+
+                seleccionado = Integer.parseInt(textoID.getText().toString());
+            }
+        });
     }
 
     private void mostrarLista(){
@@ -142,7 +162,7 @@ public class CuentaActivity extends Activity {
 
         ContentResolver CR = getContentResolver();
         int res;
-        int _id = cuenta.getInt("uid");
+        cuentaActual = cuenta.getInt("uid");
         String _username = cuenta.getString("username");
         String _name = cuenta.getString("name");
         String _lastname = cuenta.getString("lastname");
@@ -153,13 +173,13 @@ public class CuentaActivity extends Activity {
         String _accessToken = accessToken;
         String _refreshToken = refreshToken;
 
-        uri=CR.insert(URI_CUENTAS, setVALORESCUENTA(_id, _username, _name, _lastname, _dni
+        uri=CR.insert(URI_CUENTAS, setVALORESCUENTA(cuentaActual, _username, _name, _lastname, _dni
                 , _iban, _balance, _permiso, _accessToken, _refreshToken));
         res=Integer.parseInt(uri.getLastPathSegment());
 
         if(res>0) {
             Toast.makeText(getApplicationContext(),
-                    "Cuenta añadida correctamente", Toast.LENGTH_LONG).show();
+                    "Cuenta anadida correctamente", Toast.LENGTH_LONG).show();
             mostrarLista();
         }
         else
@@ -169,10 +189,98 @@ public class CuentaActivity extends Activity {
         return res;
     }
 
+    private int insertarTransacciones(JSONArray transacciones) throws  JSONException{
+
+        ContentResolver CR = getContentResolver();
+        int res = 0;
+
+        for(int i=0;i<transacciones.length();i++) {
+
+            JSONObject transaccion = transacciones.getJSONObject(i);
+
+            String _to_descrip = transaccion.getString("to_description");
+            String _from_descrip = transaccion.getString("from_description");
+            float _quantity = (float) transaccion.getDouble("quantity");
+            String _from_iban = transaccion.getString("from_iban");
+            String _to_iban = transaccion.getString("to_iban");
+            String _date = transaccion.getString("date");
+            String _status = transaccion.getString("status");
+
+            uri = CR.insert(URI_TRANSACCIONES, setVALORESTRANSACCIONES(0, cuentaActual, _to_descrip, _from_descrip, _quantity, _from_iban
+                    , _to_iban, _date, _status));
+            res = Integer.parseInt(uri.getLastPathSegment());
+        }
+
+        if(res>0) {
+            Toast.makeText(getApplicationContext(),
+                    "Transacciones anadidas correctamente", Toast.LENGTH_LONG).show();
+            mostrarLista();
+        }
+        else
+            Toast.makeText(getApplicationContext(),
+                    "No se han podido guardar las transacciones" ,   Toast.LENGTH_LONG).show();
+
+        return res;
+
+    }
+
+    private int borrarTransacciones(int cuentaid){
+
+        ContentResolver CR = getContentResolver();
+        Cursor c;
+        int res = 0;
+
+        String[] valores_recuperar = {"_id", "userId"};
+        c = CR.query(URI_TRANSACCIONES, valores_recuperar, null, null, null);
+
+        if(c!=null && c.getCount() > 0) {
+            c.moveToFirst();
+            do {
+                int _id = c.getInt(0);
+                int _cuentaid = c.getInt(1);
+
+                if(_cuentaid == cuentaid){
+
+                    uri = Uri.parse("content://luis.contentprovider/transacciones/" + _id);
+                    CR.delete(uri, null, null);
+
+                    res = Integer.parseInt(uri.getLastPathSegment());
+                }
+
+            } while (c.moveToNext());
+        }
+
+        return res;
+    }
+
     public void clicEnBoton_AnadirCuenta(View V) {
 
         urbankLogin();
 
+    }
+
+    public void clicEnBoton_IrBorrarCuenta (View view) {
+
+        ContentResolver CR = getContentResolver();
+        int res;
+
+       if(seleccionado == -1)
+           Toast.makeText(getApplicationContext(),
+                   "Ninguna cuenta seleccionada", Toast.LENGTH_LONG).show();
+        else {
+           uri = Uri.parse("content://luis.contentprovider/cuentas/" + seleccionado);
+           CR.delete(uri, null, null);
+
+           res = Math.min(Integer.parseInt(uri.getLastPathSegment()), borrarTransacciones(seleccionado));
+           if (res > 0) {
+               Toast.makeText(getApplicationContext(),
+                       "Cuenta " + seleccionado + " borrada correctamente", Toast.LENGTH_LONG).show();
+                mostrarLista();
+           }
+           else
+               Toast.makeText(getApplicationContext(),
+                       "No se ha podido borrar la cuenta", Toast.LENGTH_LONG).show();
+       }
     }
 
     public void urbankLogin(){
@@ -319,9 +427,6 @@ public class CuentaActivity extends Activity {
             try {
                 JSONObject info = new JSONObject(result);
 
-                Log.d("Access", info.toString());
-                Log.d("Access", info.toString());
-
                 new peticionUserInfo().execute();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -370,9 +475,6 @@ public class CuentaActivity extends Activity {
 
             try {
                 JSONObject cuenta = new JSONObject(result);
-
-                Log.d("Access", cuenta.toString());
-                Log.d("Access", cuenta.toString());
 
                 insertarCuenta(cuenta);
 
@@ -425,8 +527,7 @@ public class CuentaActivity extends Activity {
             try {
                 JSONArray transactions = new JSONArray(result);
 
-                Log.d("Access", transactions.toString());
-                Log.d("Access", transactions.toString());
+                insertarTransacciones(transactions);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -455,6 +556,22 @@ public class CuentaActivity extends Activity {
         return valores;
     }
 
+    private ContentValues setVALORESTRANSACCIONES(int id, int cuentaid,String to_descrip, String from_descrip, float quantity, String from_iban,
+                                                  String to_iban, String date, String status) {
+        ContentValues valores = new ContentValues();
+        if(id!=0)
+            valores.put("_id", id);
+        valores.put("userId", cuentaid);
+        valores.put("to_descr", to_descrip);
+        valores.put("from_descr", from_descrip);
+        valores.put("quantity", quantity);
+        valores.put("from_iban", from_iban);
+        valores.put("to_iban", to_iban);
+        valores.put("date", date);
+        valores.put("status", status);
 
+
+        return valores;
+    }
 
 }

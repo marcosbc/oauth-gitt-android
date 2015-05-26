@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/botoneliminarcuenta"
             android:id="@+id/botoneliminarcuenta"
+            android:onClick="clicEnBoton_IrBorrarCuenta"
             android:layout_gravity="center_horizontal"
             android:textColor="#C0C0C0"
             android:background="#003366"

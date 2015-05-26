@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Balance Total:"
-                android:id="@+id/textViewBalanceTotal"
+                android:id="@+id/textViewBalanceTotal1"
                 android:textColor="#003366"
                 android:layout_marginLeft="@dimen/margin_size_extralarge" />
 
@@ -44,8 +44,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="1845.95 €"
-                android:id="@+id/editTextBalanceTotal"
+                android:text=""
+                android:id="@+id/textViewBalanceTotal2"
                 android:layout_marginLeft="@dimen/margin_size_extralarge" />
         </LinearLayout>
 

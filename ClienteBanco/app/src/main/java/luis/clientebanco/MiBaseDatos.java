@@ -13,7 +13,7 @@ public class MiBaseDatos extends SQLiteOpenHelper {
 
     private static final String TABLA_TRANSACCIONES = "CREATE TABLE transacciones " +
             "(_id INTEGER PRIMARY KEY, userId INTEGER, to_descr TEXT, from_descr TEXT, " +
-            "quantity INTEGER, from_iban TEXT, date TEXT, status INTEGER)";
+            "quantity INTEGER, from_iban TEXT, to_iban TEXT, date TEXT, status INTEGER)";
 
 
     public MiBaseDatos(Context context) {
@@ -22,8 +22,9 @@ public class MiBaseDatos extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLA_CUENTAS);
         db.execSQL(TABLA_TRANSACCIONES);
+        db.execSQL(TABLA_CUENTAS);
+
     }
 
     @Override

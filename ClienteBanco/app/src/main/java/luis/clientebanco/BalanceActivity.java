@@ -1,7 +1,10 @@
 package luis.clientebanco;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -18,6 +21,8 @@ import luis.clientebanco.holographlibrary.LinePoint;
  */
 public class BalanceActivity extends Activity {
 
+    private static final Uri URI_CUENTAS = Uri.parse(
+            "content://luis.contentprovider/cuentas");
     private ListView lista;
 
     @Override
@@ -25,14 +30,9 @@ public class BalanceActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance);
 
-        ArrayList<Cuentas> lista_cuentas = new ArrayList<>();
-        Cuentas cuenta1 = new Cuentas(1321, "Luis", "Luis",
-                "Casabuena Gomez", "76650720T", "ES8023100001180012002356",302.83f,2,"asd","fgh");
-        Cuentas cuenta2 = new Cuentas(1321, "Luis", "Luis",
-                "Casabuena Gomez", "76650720T", "ES8023100001180012002341",1543.12f,2,"asd","fgh");
+        TextView texto_balanceTotal = (TextView) findViewById(R.id.textViewBalanceTotal2);
 
-        lista_cuentas.add(cuenta1);
-        lista_cuentas.add(cuenta2);
+        ArrayList<Cuentas> lista_cuentas = recuperarCuentas();
 
         lista = (ListView) findViewById(R.id.lista_balance);
         lista.setAdapter(new Lista_adaptador(this, R.layout.balance, lista_cuentas) {
@@ -40,19 +40,19 @@ public class BalanceActivity extends Activity {
             @Override
             public void onEntrada(Object entrada, View view) {
                 if (entrada != null) {
-                    TextView texto_contacto = (TextView) view.findViewById(R.id.textView_nombre);
-                    if (texto_contacto != null)
-                        texto_contacto.setText(((Cuentas) entrada).getNAME() + " " + ((Cuentas) entrada).getLASTNAME());
+                    TextView texto_nombre = (TextView) view.findViewById(R.id.textView_nombre);
+                    if (texto_nombre != null)
+                        texto_nombre.setText(((Cuentas) entrada).getNAME() + " " + ((Cuentas) entrada).getLASTNAME());
 
-                    TextView texto_telefono = (TextView) view.findViewById(R.id.textView_balance);
-                    if (texto_telefono != null) {
+                    TextView texto_balance = (TextView) view.findViewById(R.id.textView_balance);
+                    if (texto_balance != null) {
                         float aux = ((Cuentas) entrada).getBALANCE();
-                        texto_telefono.setText("Balance: " + Float.toString(aux) + " euros");
+                        texto_balance.setText("Balance: " + Float.toString(aux) + " euros");
                     }
 
-                    TextView texto_email = (TextView) view.findViewById(R.id.textView_iban);
-                    if (texto_email != null)
-                        texto_email.setText(((Cuentas) entrada).getIBAN());
+                    TextView texto_iban = (TextView) view.findViewById(R.id.textView_iban);
+                    if (texto_iban != null)
+                        texto_iban.setText(((Cuentas) entrada).getIBAN());
 
                     TextView texto_ID = (TextView) view.findViewById(R.id.textView_ID);
                     if (texto_ID != null)
@@ -61,6 +61,13 @@ public class BalanceActivity extends Activity {
                 }
             }
         });
+
+        float balanceTotal = 0;
+        for(int i=0;i<lista_cuentas.size();i++){
+            balanceTotal += lista_cuentas.get(i).getBALANCE();
+        }
+
+        texto_balanceTotal.setText(Float.toString(balanceTotal) + " euros");
 
         Line l = new Line();
         LinePoint p = new LinePoint();
@@ -91,6 +98,39 @@ public class BalanceActivity extends Activity {
             }
 
         });
+    }
+
+    public ArrayList<Cuentas> recuperarCuentas() {
+
+        ContentResolver CR = getContentResolver();
+        Cursor c;
+
+        ArrayList<Cuentas> lista_cuentas = new ArrayList<Cuentas>();
+
+        String[] valores_recuperar = {"_id", "username", "name", "lastname", "dni", "iban",
+                "balance", "permiso", "accessToken", "refreshToken"};
+        c = CR.query(URI_CUENTAS, valores_recuperar, null, null, null);
+
+        if(c!=null && c.getCount() > 0) {
+            c.moveToFirst();
+            do {
+                int _id = c.getInt(0);
+                String _username = c.getString(1);
+                String _name = c.getString(2);
+                String _lastname = c.getString(3);
+                String _dni = c.getString(4);
+                String _iban = c.getString(5);
+                float _balance = c.getFloat(6);
+                int _permiso = c.getInt(7);
+                String _accessToken = c.getString(8);
+                String _refreshToken = c.getString(9);
+                Cuentas cuentas = new Cuentas(_id, _username, _name, _lastname, _dni
+                        , _iban, _balance, _permiso, _accessToken, _refreshToken);
+                lista_cuentas.add(cuentas);
+            } while (c.moveToNext());
+        }
+
+        return lista_cuentas;
     }
 
 }
