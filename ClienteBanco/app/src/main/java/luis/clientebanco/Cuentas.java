@@ -10,11 +10,13 @@ public class Cuentas {
     private String iban;
     private float balance;
     private int permiso;
+    private String accessToken;
+    private String refreshToken;
 
 
 
     public Cuentas(int id, String username, String name, String lastname,String dni,String iban,
-                   float balance,int permiso) {
+                   float balance,int permiso, String accessToken, String refreshToken) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -23,6 +25,8 @@ public class Cuentas {
         this.iban = iban;
         this.balance = balance;
         this.permiso = permiso;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
 
     }
 
@@ -76,10 +80,17 @@ public class Cuentas {
         this.balance = balance;
     }
 
-    public int getPERMISO() {
-        return permiso;
+    public String getACCESSTOKEN() {
+        return accessToken;
     }
-    public void setPERMISO(int permiso) {
-        this.permiso = permiso;
+    public void setACCESSTOKEN(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getREFRESHTOKEN() {
+        return refreshToken;
+    }
+    public void setREFRESHTOKEN(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

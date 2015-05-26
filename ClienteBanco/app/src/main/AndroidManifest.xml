@@ -35,18 +35,11 @@
             android:name="luis.clientebanco.OperacionesActivity"
             android:label="@string/title_activity_operaciones" >
         </activity>
-        <activity
-            android:name="luis.clientebanco.PresupuestosActivity"
-            android:label="@string/title_activity_presupuestos" >
-        </activity>
-        <activity
-            android:name="luis.clientebanco.TransaccionesActivity"
-            android:label="@string/title_activity_transacciones" >
-        </activity>
-        <activity
-            android:name="luis.clientebanco.AppMainExample"
-            android:label="OAuth Testing" >
-        </activity>
+
+        <provider
+            android:name=".MiContentProvider"
+            android:authorities="luis.contentprovider" >
+        </provider>
     </application>
 
 </manifest>

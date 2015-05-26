@@ -10,9 +10,7 @@ public class InicioActivity extends Activity {
     private final static int CUENTA = 0;
     private final static int BALANCE = 1;
     private final static int OPERACIONES = 2;
-    private final static int PRESUPUESTOS = 3;
-    private final static int TRANSACCIONES = 4;
-    private final static int AJUSTES = 5;
+    private final static int AJUSTES = 3;
 
     public void clicEnBoton_IrCuenta (View view) {
         Intent intent = new Intent(this, CuentaActivity.class);
@@ -26,17 +24,10 @@ public class InicioActivity extends Activity {
         Intent intent = new Intent(this, OperacionesActivity.class);
         startActivityForResult(intent, OPERACIONES);
     }
-    public void clicEnBoton_IrPresupuestos (View view) {
-        Intent intent = new Intent(this, PresupuestosActivity.class);
-        startActivityForResult(intent, PRESUPUESTOS);
-    }
-    public void clicEnBoton_IrTransacciones (View view) {
-        Intent intent = new Intent(this, TransaccionesActivity.class);
-        startActivityForResult(intent, TRANSACCIONES);
-    }
+
     public void clicEnBoton_IrAjustes (View view) {
         //Intent intent = new Intent(this, AjustesActivity.class);
-        Intent intent = new Intent(this, AppMainExample.class);
+        Intent intent = new Intent(this, AjustesActivity.class);
         startActivityForResult(intent, AJUSTES);
     }
 

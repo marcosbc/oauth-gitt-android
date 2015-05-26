@@ -19,14 +19,12 @@
  */
 
 
-package luis.clientebanco;
+package luis.clientebanco.OAuth;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,39 +39,19 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import luis.clientebanco.OAuth.AppContext;
-import luis.clientebanco.OAuth.GenericDialogListener;
-import luis.clientebanco.OAuth.LOGGING;
-import luis.clientebanco.OAuth.UrbankOAuthDialog;
-import luis.clientebanco.OAuth.WebService;
-
-public class AppMainExample extends Activity {
+public final class UrbankOAuth {
     
-	protected static final String TAG = "AppMainExample";
+	protected static final String TAG = "urbankAccessCode";
 	
-	public Context mContext;
-	public Activity mActivity;
+
 	public WebService webService;
 
 	private String accessCode;
 	private String accessToken;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        mContext = this;
-        mActivity = this;
-        setContentView(R.layout.appmainexample);
-    }
 
-	public void urbankLogin(View V){
 
-		urbankAccessCode();
-
-	}
-
-	private void urbankAccessCode(){
+	public void urbankLogin(Context mContext){
 
 		webService = new WebService();
 
@@ -98,10 +76,8 @@ public class AppMainExample extends Activity {
 				try{
 
 					accessCode = values.getString("code");
-
 					new urbankAccessToken().execute();
-					//JSONObject tokenJson = new JSONObject(tokenResponse);
-					//if(LOGGING.DEBUG)Log.d(TAG, "tokenJson->" + tokenJson);
+
 
 				}
 				catch (Exception ex1){
@@ -121,60 +97,8 @@ public class AppMainExample extends Activity {
 
 	}
 
-	/*
-	public void urbankAccessToken(){
 
-		accessToken = "";
-
-		String authRequestRedirect = AppContext.UB_APP_TOKEN_URL
-				+ "?client_id="+AppContext.UB_CLIENT_ID
-				+ "&redirect_uri="+AppContext.UB_APP_REDIRECT
-				+ "&grant_type=authorization_code"
-				+ "&client_secret=" + AppContext.UB_CLIENT_SECRET
-				+ "&code=" + accessCode
-		;
-
-		if(LOGGING.DEBUG)
-			Log.d(TAG, "authRequestRedirect->"+authRequestRedirect);
-
-		new  UrbankOAuthDialog(mContext, authRequestRedirect, new GenericDialogListener() {
-
-			public void onComplete(Bundle values) {
-				if(LOGGING.DEBUG)
-					Log.d(TAG, "onComplete->"+values);
-
-				accessToken = "";
-
-				try{
-
-					accessToken = values.toString();
-
-					//JSONObject tokenJson = new JSONObject(tokenResponse);
-					//if(LOGGING.DEBUG)Log.d(TAG, "tokenJson->" + tokenJson);
-
-				}
-				catch (Exception ex1){
-					Log.w(TAG, ex1.toString());
-					accessToken = null;
-				}
-				Log.v(TAG, "prueba");
-			}
-			public void onError(String e) {
-				if(LOGGING.DEBUG)Log.d(TAG, "onError->"+e);
-			}
-			public void onCancel() {
-
-				if(LOGGING.DEBUG)Log.d(TAG, "onCancel()");
-			}
-		}).show();
-
-	}
-
-*/
-
-	public class urbankAccessToken extends AsyncTask<Void,Void,String>
-
-	{
+	public class urbankAccessToken extends AsyncTask<Void,Void,String> {
 		@Override
 		protected String doInBackground(Void... params){
 
@@ -230,9 +154,7 @@ public class AppMainExample extends Activity {
 		}
 	}
 
-	public class peticionAPI extends AsyncTask<Void,Void,String>
-
-	{
+	public class peticionAPI extends AsyncTask<Void,Void,String> {
 		@Override
 		protected String doInBackground(Void... params) {
 
@@ -281,5 +203,56 @@ public class AppMainExample extends Activity {
 
 		}
 	}
+
+		/*
+	public void urbankAccessToken(){
+
+		accessToken = "";
+
+		String authRequestRedirect = AppContext.UB_APP_TOKEN_URL
+				+ "?client_id="+AppContext.UB_CLIENT_ID
+				+ "&redirect_uri="+AppContext.UB_APP_REDIRECT
+				+ "&grant_type=authorization_code"
+				+ "&client_secret=" + AppContext.UB_CLIENT_SECRET
+				+ "&code=" + accessCode
+		;
+
+		if(LOGGING.DEBUG)
+			Log.d(TAG, "authRequestRedirect->"+authRequestRedirect);
+
+		new  UrbankOAuthDialog(mContext, authRequestRedirect, new GenericDialogListener() {
+
+			public void onComplete(Bundle values) {
+				if(LOGGING.DEBUG)
+					Log.d(TAG, "onComplete->"+values);
+
+				accessToken = "";
+
+				try{
+
+					accessToken = values.toString();
+
+					//JSONObject tokenJson = new JSONObject(tokenResponse);
+					//if(LOGGING.DEBUG)Log.d(TAG, "tokenJson->" + tokenJson);
+
+				}
+				catch (Exception ex1){
+					Log.w(TAG, ex1.toString());
+					accessToken = null;
+				}
+				Log.v(TAG, "prueba");
+			}
+			public void onError(String e) {
+				if(LOGGING.DEBUG)Log.d(TAG, "onError->"+e);
+			}
+			public void onCancel() {
+
+				if(LOGGING.DEBUG)Log.d(TAG, "onCancel()");
+			}
+		}).show();
+
+	}
+
+*/
 }
 

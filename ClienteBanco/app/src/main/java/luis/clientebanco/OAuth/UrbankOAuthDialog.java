@@ -131,7 +131,8 @@ public class UrbankOAuthDialog extends Dialog {
             if (AppContext.DEBUG)
                  Log.d(TAG, "onPageStarted->Webview loading URL: " + url);
             super.onPageStarted(view, url, favicon);
-            mSpinner.show();
+            if(mSpinner.isShowing() == false)
+                mSpinner.show();
         }
 
         @Override
@@ -146,7 +147,7 @@ public class UrbankOAuthDialog extends Dialog {
             }
           
             try {// to avoid crashing the app add try-catch block, avoid this stupid crash!
-	            if (mSpinner!=null && mSpinner.isShowing())// by YG
+	            while (mSpinner!=null && mSpinner.isShowing())// by YG
 	            	mSpinner.dismiss();
             }
             catch (Exception ex) {
@@ -154,8 +155,8 @@ public class UrbankOAuthDialog extends Dialog {
             }
               
             if (url.startsWith(OAUTHCALLBACK_URI)) {
-                Bundle values = Utils.parseUrl(url); 
-               
+                Bundle values = Utils.parseUrl(url);
+
                 String error = values.containsKey("error")?values.getString("error"):null;
                 if (error == null) {
                     error = values.containsKey("error_type")?values.getString("error_type"):null;

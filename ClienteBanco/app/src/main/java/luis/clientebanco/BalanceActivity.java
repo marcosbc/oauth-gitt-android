@@ -27,9 +27,9 @@ public class BalanceActivity extends Activity {
 
         ArrayList<Cuentas> lista_cuentas = new ArrayList<>();
         Cuentas cuenta1 = new Cuentas(1321, "Luis", "Luis",
-                "Casabuena Gomez", "76650720T", "ES8023100001180012002356",302.83f,2);
+                "Casabuena Gomez", "76650720T", "ES8023100001180012002356",302.83f,2,"asd","fgh");
         Cuentas cuenta2 = new Cuentas(1321, "Luis", "Luis",
-                "Casabuena Gomez", "76650720T", "ES8023100001180012002341",1543.12f,2);
+                "Casabuena Gomez", "76650720T", "ES8023100001180012002341",1543.12f,2,"asd","fgh");
 
         lista_cuentas.add(cuenta1);
         lista_cuentas.add(cuenta2);

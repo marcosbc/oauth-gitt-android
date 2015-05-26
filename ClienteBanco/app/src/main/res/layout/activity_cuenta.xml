@@ -17,6 +17,7 @@
             android:text="@string/botonañadircuenta"
             android:id="@+id/botonañadircuenta"
             android:layout_gravity="center_horizontal"
+            android:onClick="clicEnBoton_AnadirCuenta"
             android:textColor="#C0C0C0"
             android:background="#003366"
             android:layout_marginTop="10dp" />
