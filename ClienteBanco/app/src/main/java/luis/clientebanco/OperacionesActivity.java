@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import luis.clientebanco.holographlibrary.PieGraph;
@@ -36,56 +35,47 @@ public class OperacionesActivity extends Activity {
 
         ArrayList<Transacciones> lista_transacciones = recuperarTransacciones();
 
-        PieGraph pg = (PieGraph) findViewById(R.id.piegraph);
-        PieSlice slice = new PieSlice();
-        slice.setColor(Color.CYAN);
-        slice.setValue(0);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.BLUE);
-        slice.setValue(0);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.GREEN);
-        slice.setValue(0);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.MAGENTA);
-        slice.setValue(0);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.YELLOW);
-        slice.setValue(0);
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.RED);
-        slice.setValue(0);
-        pg.addSlice(slice);
-
-        pg.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener(){
-
-            @Override
-            public void onClick(int index) {
-
-            }
-
-        });
+        dibujarGrafico(lista_transacciones);
 
         lista = (ListView) findViewById(R.id.lista_operaciones);
         lista.setAdapter(new Lista_adaptador(this, R.layout.operaciones, lista_transacciones) {
 
-            int contador = 0;
             @Override
             public void onEntrada(Object entrada, View view) {
                 if (entrada != null) {
+                    float _quantity = 0;
                     TextView texto_descrip = (TextView) view.findViewById(R.id.textView_descrip);
-                    if (texto_descrip != null)
+                    if (texto_descrip != null) {
                         texto_descrip.setText(((Transacciones) entrada).getFROMDESCRIP());
 
+                        Button boton  = (Button) view.findViewById(R.id.imageView_button);
+                        int categoria = determinarCategoria(((Transacciones) entrada).getFROMDESCRIP());
+                        switch (categoria) {
+                            case 0:
+                                boton.setBackgroundColor(Color.CYAN);
+                                break;
+                            case 1:
+                                boton.setBackgroundColor(Color.BLUE);
+                                break;
+                            case 2:
+                                boton.setBackgroundColor(Color.GREEN);
+                                break;
+                            case 3:
+                                boton.setBackgroundColor(Color.MAGENTA);
+                                break;
+                            case 4:
+                                boton.setBackgroundColor(Color.YELLOW);
+                                break;
+                            case 5:
+                                boton.setBackgroundColor(Color.RED);
+                                break;
+                        }
+
+                    }
                     TextView texto_quantity = (TextView) view.findViewById(R.id.textView_quantity);
                     if (texto_quantity != null) {
-                        float aux = ((Transacciones) entrada).getQUANTITY();
-                        texto_quantity.setText("Cantidad: " + Float.toString(aux) + " euros");
+                         _quantity= ((Transacciones) entrada).getQUANTITY();
+                        texto_quantity.setText("Cantidad: " + Float.toString(_quantity) + " euros");
                     }
 
                     TextView texto_iban = (TextView) view.findViewById(R.id.textView_fromiban);
@@ -96,37 +86,6 @@ public class OperacionesActivity extends Activity {
                     if (texto_date != null)
                         texto_date.setText(((Transacciones) entrada).getDATE());
 
-                    Button boton  = (Button) view.findViewById(R.id.imageView_button);
-
-                    int categoria = determinarCategoria(texto_descrip.getText().toString());
-                    PieGraph pg = (PieGraph) findViewById(R.id.piegraph);
-                    PieSlice slice = pg.getSlice(categoria);
-                    slice.setValue(slice.getValue() + Float.parseFloat(texto_quantity.getText().toString()));
-                    switch(categoria) {
-
-                        case 0:
-                            boton.setBackgroundColor(Color.CYAN);
-                            break;
-                        case 1:
-                            boton.setBackgroundColor(Color.BLUE);
-                            break;
-                        case 2:
-                            boton.setBackgroundColor(Color.GREEN);
-                            break;
-                        case 3:
-                            boton.setBackgroundColor(Color.MAGENTA);
-                            break;
-                        case 4:
-                            boton.setBackgroundColor(Color.YELLOW);
-                            break;
-                        case 5:
-                            boton.setBackgroundColor(Color.RED);
-                            break;
-
-
-                    }
-
-
                     TextView texto_ID = (TextView) view.findViewById(R.id.textView_ID);
                     if (texto_ID != null)
                         texto_ID.setText(Integer.toString(((Transacciones) entrada).getCUENTAID()));
@@ -134,7 +93,6 @@ public class OperacionesActivity extends Activity {
                 }
             }
         });
-
 
     }
 
@@ -172,18 +130,69 @@ public class OperacionesActivity extends Activity {
         return lista_transacciones;
     }
 
+    public void dibujarGrafico(ArrayList<Transacciones> lista_transacciones){
+
+        PieGraph pg = (PieGraph) findViewById(R.id.piegraph);
+        PieSlice slice = new PieSlice();
+        slice.setColor(Color.CYAN);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.BLUE);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.GREEN);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.MAGENTA);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.YELLOW);
+        slice.setValue(0);
+        pg.addSlice(slice);
+        slice = new PieSlice();
+        slice.setColor(Color.RED);
+        slice.setValue(0);
+        pg.addSlice(slice);
+
+        pg.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener(){
+
+            @Override
+            public void onClick(int index) {
+
+            }
+
+        });
+
+        for(int i=0;i<lista_transacciones.size();i++) {
+            String valorDescr = lista_transacciones.get(i).getFROMDESCRIP();
+            int categoria = determinarCategoria(valorDescr);
+
+            slice = pg.getSlice(categoria);
+            float valorSlice = slice.getValue();
+            slice.getColor();
+            float valorTransaccion = lista_transacciones.get(i).getQUANTITY();
+            slice.setValue(valorSlice + valorTransaccion);
+
+
+        }
+    }
+
     public int determinarCategoria(String desc) {
-        int cat = 0; //otros
-        if(desc.contains("CARREFOUR") || desc.contains("MERCADONA") || desc.contains("DIA"))
-            cat = 1; //comida
+        int cat = 0; //otros    CIAN
+        if(desc.contains("CARREFOUR") || desc.contains("MERCADONA") || desc.contains("DIA") || desc.contains("SUPERMERCADOS"))
+            cat = 1; //comida   AZUL
         else if(desc.contains("DECATHLON"))
-            cat = 2; //ropa
+            cat = 2; //ropa VERDE
         else if(desc.contains("PEAJE"))
-            cat = 3; // peajes
+            cat = 3; // peajes  MAGENTA
         else if(desc.contains("APPLE"))
-            cat = 4; // tecnologia
+            cat = 4; // tecnologia  AMARILLO
         else if(desc.contains("TRANSFERENCIA"))
-            cat = 5;
+            cat = 5; //transferencias   ROJO
 
         return cat;
     }

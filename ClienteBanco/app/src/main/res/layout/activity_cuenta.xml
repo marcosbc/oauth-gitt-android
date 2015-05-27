@@ -22,32 +22,32 @@
             android:background="#003366"
             android:layout_marginTop="10dp" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/botonmodificarcuenta"
-            android:id="@+id/botonmodificarcuenta"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#C0C0C0"
-            android:background="#003366"
-            android:layout_marginTop="10dp" />
+        <!--  <Button
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/botonmodificarcuenta"
+              android:id="@+id/botonmodificarcuenta"
+              android:layout_gravity="center_horizontal"
+              android:textColor="#C0C0C0"
+              android:background="#003366"
+              android:layout_marginTop="10dp" />
+        -->
+          <Button
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:text="@string/botoneliminarcuenta"
+              android:id="@+id/botoneliminarcuenta"
+              android:onClick="clicEnBoton_IrBorrarCuenta"
+              android:layout_gravity="center_horizontal"
+              android:textColor="#C0C0C0"
+              android:background="#003366"
+              android:layout_marginTop="10dp" />
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/botoneliminarcuenta"
-            android:id="@+id/botoneliminarcuenta"
-            android:onClick="clicEnBoton_IrBorrarCuenta"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#C0C0C0"
-            android:background="#003366"
-            android:layout_marginTop="10dp" />
-
-        <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/listacuentas"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
-</RelativeLayout>
+          <ListView
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:id="@+id/listacuentas"
+              android:layout_gravity="center_horizontal"
+              android:layout_marginTop="10dp" />
+      </LinearLayout>
+  </RelativeLayout>

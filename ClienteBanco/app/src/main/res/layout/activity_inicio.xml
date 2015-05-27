@@ -75,16 +75,16 @@
             android:background="#003366"
             android:textColor="#C0C0C0" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/botonajustes"
-            android:id="@+id/botonajustes"
-            android:layout_marginTop="40dp"
-            android:layout_gravity="center_horizontal"
-            android:onClick="clicEnBoton_IrAjustes"
-            android:background="#003366"
-            android:textColor="#C0C0C0" />
-
-    </LinearLayout>
-</RelativeLayout>
+        <!-- <Button
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="@string/botonajustes"
+             android:id="@+id/botonajustes"
+             android:layout_marginTop="40dp"
+             android:layout_gravity="center_horizontal"
+             android:onClick="clicEnBoton_IrAjustes"
+             android:background="#003366"
+             android:textColor="#C0C0C0" />
+        -->
+     </LinearLayout>
+ </RelativeLayout>

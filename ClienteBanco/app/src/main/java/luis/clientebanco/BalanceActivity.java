@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import luis.clientebanco.holographlibrary.Line;
-import luis.clientebanco.holographlibrary.LineGraph;
-import luis.clientebanco.holographlibrary.LinePoint;
+import luis.clientebanco.holographlibrary.Bar;
+import luis.clientebanco.holographlibrary.BarGraph;
 
 /**
  * Created by Luis on 02/05/2015.
@@ -29,8 +28,6 @@ public class BalanceActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance);
-
-        TextView texto_balanceTotal = (TextView) findViewById(R.id.textViewBalanceTotal2);
 
         ArrayList<Cuentas> lista_cuentas = recuperarCuentas();
 
@@ -62,8 +59,13 @@ public class BalanceActivity extends Activity {
             }
         });
 
-        Line l = new Line();
-        LinePoint p;
+        dibujarGrafico(lista_cuentas);
+    }
+
+    public void dibujarGrafico(ArrayList<Cuentas> lista_cuentas){
+        ArrayList<Bar> points = new ArrayList<Bar>();
+        Bar d;
+
         float balance = 0;
         float balanceTotal = 0;
         for(int i=0;i<lista_cuentas.size();i++){
@@ -72,30 +74,35 @@ public class BalanceActivity extends Activity {
             balanceTotal += balance;
 
 
-            p = new LinePoint();
-            p.setX(i);
-            p.setY(balance);
-            l.addPoint(p);
+            d = new Bar();
+
+            d.setValue(balance);
+            d.setName(lista_cuentas.get(i).getNAME() + " " + lista_cuentas.get(i).getLASTNAME());
+            d.setColor(Color.parseColor("#003366"));
+
+            points.add(d);
+
         }
 
+        TextView texto_balanceTotal = (TextView) findViewById(R.id.textViewBalanceTotal2);
         texto_balanceTotal.setText(Float.toString(balanceTotal) + " euros");
 
-        l.setColor(Color.parseColor("#003366"));
 
-        LineGraph li = (LineGraph) findViewById(R.id.linegraph);
-        li.addLine(l);
-        li.setRangeY(0, balanceTotal);
-        li.setLineToFill(0);
+        BarGraph g = (BarGraph) findViewById(R.id.bargraph);
+        assert g != null;
+        g.setUnit(" Euros");
+        g.appendUnit(true);
+        g.setBars(points);
 
-        li.setOnPointClickedListener(new LineGraph.OnPointClickedListener(){
+        g.setOnBarClickedListener(new BarGraph.OnBarClickedListener() {
 
             @Override
-            public void onClick(int lineIndex, int pointIndex) {
-                // TODO Auto-generated method stub
+            public void onClick(int index) {
 
             }
 
         });
+
     }
 
     public ArrayList<Cuentas> recuperarCuentas() {
